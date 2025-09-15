@@ -1,0 +1,525 @@
+[
+    {
+        "Total": 28017.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500490,
+        "Municipio": "JARAGUARI",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 1.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500540,
+        "Municipio": "MARACAJU",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 1.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500840,
+        "Municipio": "VICENTINA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 1.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500390,
+        "Municipio": "FIGUEIRÃO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 1.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500560,
+        "Municipio": "MIRANDA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 2.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500450,
+        "Municipio": "ITAPORÃ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 2.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500085,
+        "Municipio": "ANGÉLICA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 2.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500260,
+        "Municipio": "CAMAPUÃ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 3.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500710,
+        "Municipio": "RIBAS DO RIO PARDO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 3.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500345,
+        "Municipio": "DEODÁPOLIS",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 4.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500315,
+        "Municipio": "CORONEL SAPUCAIA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 4.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500568,
+        "Municipio": "MUNDO NOVO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 6.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500790,
+        "Municipio": "SIDROLÂNDIA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 6.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500150,
+        "Municipio": "BANDEIRANTES",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 7.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500348,
+        "Municipio": "DOIS IRMÃOS DO BURITI",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 7.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500635,
+        "Municipio": "PARANHOS",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 8.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500769,
+        "Municipio": "SÃO GABRIEL DO OESTE",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 9.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500310,
+        "Municipio": "CORGUINHO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 9.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500470,
+        "Municipio": "IVINHEMA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 12.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500520,
+        "Municipio": "LADÁRIO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 14.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500793,
+        "Municipio": "SONORA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 15.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500220,
+        "Municipio": "BONITO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 17.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500660,
+        "Municipio": "PONTA PORÃ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 20.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500070,
+        "Municipio": "ANASTÁCIO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 20.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500215,
+        "Municipio": "BODOQUENA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 21.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500570,
+        "Municipio": "NAVIRAÍ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 22.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500795,
+        "Municipio": "TACURU",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 22.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500500,
+        "Municipio": "JARDIM",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 26.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500430,
+        "Municipio": "IGUATEMI",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 28.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500480,
+        "Municipio": "JAPORÃ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 38.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500325,
+        "Municipio": "COSTA RICA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 46.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500750,
+        "Municipio": "ROCHEDO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 50.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500020,
+        "Municipio": "ÁGUA CLARA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 52.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500515,
+        "Municipio": "JUTI",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 71.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500124,
+        "Municipio": "ARAL MOREIRA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 80.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500025,
+        "Municipio": "ALCINÓPOLIS",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 84.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500740,
+        "Municipio": "RIO VERDE DE MATO GROSSO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 86.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500060,
+        "Municipio": "AMAMBAI",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 88.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500200,
+        "Municipio": "BATAYPORÃ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 90.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500600,
+        "Municipio": "NOVA ALVORADA DO SUL",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 93.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500410,
+        "Municipio": "GUIA LOPES DA LAGUNA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 107.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500240,
+        "Municipio": "CAARAPÓ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 115.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500770,
+        "Municipio": "SETE QUEDAS",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 172.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500797,
+        "Municipio": "TAQUARUSSU",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 177.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500230,
+        "Municipio": "BRASILÂNDIA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 238.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500090,
+        "Municipio": "ANTÔNIO JOÃO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 278.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500350,
+        "Municipio": "DOURADINA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 300.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500620,
+        "Municipio": "NOVA ANDRADINA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 311.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500460,
+        "Municipio": "ITAQUIRAÍ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 340.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500525,
+        "Municipio": "LAGUNA CARAPÃ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 373.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500830,
+        "Municipio": "TRÊS LAGOAS",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 406.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500280,
+        "Municipio": "CARACOL",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 422.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500100,
+        "Municipio": "APARECIDA DO TABOADO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 487.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500755,
+        "Municipio": "SANTA RITA DO PARDO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 501.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500730,
+        "Municipio": "RIO NEGRO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 557.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500330,
+        "Municipio": "COXIM",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 580.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500510,
+        "Municipio": "JATEÍ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 824.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500295,
+        "Municipio": "CHAPADÃO DO SUL",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 871.0
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500320,
+        "Municipio": "CORUMBÁ",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 1.013
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500690,
+        "Municipio": "PORTO MURTINHO",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 1.133
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500720,
+        "Municipio": "RIO BRILHANTE",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 1.445
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500370,
+        "Municipio": "DOURADOS",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 1.552
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500800,
+        "Municipio": "TERENOS",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 1.896
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500110,
+        "Municipio": "AQUIDAUANA",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 2.69
+    },
+    {
+        "Uf": "MS",
+        "Ibge": 500270,
+        "Municipio": "CAMPO GRANDE",
+        "Atendimento Individual": 0,
+        "Atendimento Odontológico": 0,
+        "Procedimento": 10.158
+    }
+]

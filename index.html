@@ -49,28 +49,18 @@
                 <div class="legend">
                     <h3>Legenda</h3>
                     <div class="legend-description" style="font-size: 1em; margin-bottom: 10px;">
-                        <br><b>Verde:</b> Cidade atende bem a população<br>
-                        <b>Amarelo:</b> Atenção média<br>
-                        <b>Vermelho:</b> Cidade atende pouco da população<br>
-                        <b>Cinza:</b> Sem dados disponíveis<br>
+                        <br><b>Azul Escuro:</b> Possui práticas integrativas<br>
+                        <b>Cinza:</b> Não possui práticas integrativas / Sem dados<br>
                         </span>
                     </div>
                     <div class="legend-content">
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #48ff00;"></div>
-                            <span>Verde: cidade atende bem</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #ffe600;"></div>
-                            <span>Amarelo: atenção média</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #ff0000;"></div>
-                            <span>Vermelho: atende pouco</span>
+                            <div class="legend-color" style="background: #003d7a;"></div>
+                            <span>Azul escuro: possui práticas</span>
                         </div>
                         <div class="legend-item">
                             <div class="legend-color" style="background: #cccccc;"></div>
-                            <span>Cinza: sem dados</span>
+                            <span>Cinza: não possui práticas</span>
                         </div>
                     </div>
                 </div>
@@ -78,6 +68,10 @@
                 <div class="stats-panel">
                     <h3>Estatísticas</h3>
                     <div id="statsContent">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Geral dos Dados:</span>
+                            <span class="stat-value" id="totalGeralDados">-</span>
+                        </div>
                         <div class="stat-item">
                             <span class="stat-label">Total de Municípios:</span>
                             <span class="stat-value" id="totalMunicipios">79</span>

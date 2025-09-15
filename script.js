@@ -4,26 +4,19 @@ let municipiosLayer;
 let municipiosData = {};
 let procedimentosData = {};
 let populacaoData = {};
+let totalGeralDados = 0; // Armazena o total geral dos dados carregados
 let currentYear = '2024';
 
 
 const sheetsUrls = {
-  '2019': './csv/pics 2019 - Dados.csv',
-  '2020': './csv/pics 2020 - Dados.csv',
-  '2021': './csv/pics 2021 - Dados.csv',
-  '2022': './csv/pics 2022 - Dados.csv',
-  '2023': './csv/pics 2023 - Dados.csv',
-  '2024': './csv/pics 2024 - Dados.csv',
-  '2025': './csv/pics 2025 - Dados.csv'
+  '2019': './csv/pics 2019 - Dados.json',
+  '2020': './csv/pics 2020 - Dados.json',
+  '2021': './csv/pics 2021 - Dados.json',
+  '2022': './csv/pics 2022 - Dados.json',
+  '2023': './csv/pics 2023 - Dados.json',
+  '2024': './csv/pics 2024 - Dados.json',
+  '2025': './csv/pics 2025 - Dados.json'
 };
-
-
-// Escala de cores baseada na cobertura percentual
-const colorScaleCobertura = [
-  { min: 8, max: Infinity, color: '#48ff00' },   // Verde
-  { min: 3, max: 7.999, color: '#ffe600' },   // Amarelo
-  { min: 0, max: 2.999, color: '#ff0000' }    // Vermelho
-];
 
 // Função para obter a população do município a partir do feature
 // Busca a população pelo nome do município normalizado
@@ -36,19 +29,14 @@ function getPopulacaoByFeature(feature) {
   return 0;
 }
 
-// Função para calcular a cor baseada na cobertura relativa
-function getColorCobertura(feature) {
+// Função para calcular a cor baseada na presença de práticas integrativas
+function getCorPraticasIntegrativas(feature) {
   const procedimentos = lookupProcedimentosByFeature(feature);
-  const populacao = getPopulacaoByFeature(feature);
-  if (!populacao || populacao === 0) return '#cccccc';
-  if (!procedimentos || procedimentos === 0) return '#cccccc';
-  const cobertura = (procedimentos / populacao) * 100;
-  if (isNaN(cobertura)) return '#cccccc';
-  for (let i = 0; i < colorScaleCobertura.length; i++) {
-    const r = colorScaleCobertura[i];
-    if (cobertura >= r.min && cobertura <= r.max) return r.color;
+  // Se tem procedimentos/práticas integrativas: azul escuro, senão: cinza
+  if (procedimentos && procedimentos > 0) {
+    return '#003d7a'; // Azul escuro
   }
-  return '#cccccc';
+  return '#cccccc'; // Cinza
 }
 
 function normalizeIBGE(v) {
@@ -175,7 +163,7 @@ function createMunicipiosLayer() {
   municipiosLayer = L.geoJSON(municipiosData, {
     style: (feature) => {
       return {
-        fillColor: getColorCobertura(feature),
+        fillColor: getCorPraticasIntegrativas(feature),
         weight: 1,
         opacity: 1,
         color: '#ffffff',
@@ -225,9 +213,9 @@ function selectMunicipio(e) {
   const p = feature.properties;
   const procedimentos = lookupProcedimentosByFeature(feature);
   const populacao = getPopulacaoByFeature(feature);
-  const cobertura = (populacao && populacao > 0) ? ((procedimentos / populacao) * 100) : 0;
+  const temPraticas = procedimentos > 0 ? 'Sim' : 'Não';
 
-  updateInfoPanel(p, procedimentos, populacao, cobertura);
+  updateInfoPanel(p, procedimentos, populacao, temPraticas);
 
   const popupContent = `
     <div>
@@ -235,7 +223,7 @@ function selectMunicipio(e) {
       <div class="popup-info"><span class="popup-label">Código IBGE:</span> <span class="popup-value">${p.CD_MUN}</span></div>
       <div class="popup-info"><span class="popup-label">População:</span> <span class="popup-value">${formatNumber(populacao)}</span></div>
       <div class="popup-info"><span class="popup-label">Procedimentos (${currentYear}):</span> <span class="popup-value">${formatNumber(procedimentos)}</span></div>
-      <div class="popup-info"><span class="popup-label">Cobertura:</span> <span class="popup-value">${cobertura.toFixed(2)}%</span></div>
+      <div class="popup-info"><span class="popup-label">Possui Práticas Integrativas:</span> <span class="popup-value">${temPraticas}</span></div>
       <div class="popup-info"><span class="popup-label">Área:</span> <span class="popup-value">${formatNumber(Math.round(p.AREA_KM2))} km²</span></div>
     </div>
   `;
@@ -243,7 +231,7 @@ function selectMunicipio(e) {
 }
 
 
-function updateInfoPanel(p, procedimentos, populacao, cobertura) {
+function updateInfoPanel(p, procedimentos, populacao, temPraticas) {
   const infoDiv = document.getElementById('municipioInfo');
   if (!infoDiv) return;
   infoDiv.innerHTML = `
@@ -255,7 +243,7 @@ function updateInfoPanel(p, procedimentos, populacao, cobertura) {
       <div class="detail-item"><span class="detail-label">Estado:</span><span class="detail-value">${p.NM_UF} (${p.SIGLA_UF})</span></div>
       <div class="detail-item"><span class="detail-label">Área:</span><span class="detail-value">${formatNumber(Math.round(p.AREA_KM2))} km²</span></div>
       <div class="detail-item"><span class="detail-label">Procedimentos (${currentYear}):</span><span class="detail-value">${formatNumber(procedimentos)}</span></div>
-      <div class="detail-item"><span class="detail-label">Cobertura:</span><span class="detail-value">${(cobertura || 0).toFixed(2)}%</span></div>
+      <div class="detail-item"><span class="detail-label">Possui Práticas Integrativas:</span><span class="detail-value">${temPraticas}</span></div>
     </div>
   `;
 }
@@ -278,20 +266,8 @@ async function loadProcedimentosData(year) {
   try {
     const response = await fetch(url, { cache: 'no-store' });
     if (!response.ok) throw new Error(`Arquivo não encontrado (${response.status}) — ${url}`);
-    const csvText = await response.text();
-
-    Papa.parse(csvText, {
-      header: true,
-      skipEmptyLines: true,
-      dynamicTyping: true,
-      complete: (results) => {
-        processProcedimentosData(results.data, year);
-      },
-      error: (error) => {
-        console.error('Erro ao parsear CSV:', error);
-        alert(`Erro ao processar o CSV de ${year}. Verifique o formato/colunas.`);
-      }
-    });
+    const jsonData = await response.json();
+    processProcedimentosData(jsonData, year);
   } catch (err) {
     console.error('Erro ao carregar dados dos procedimentos (local):', err);
     alert(`Não foi possível carregar o arquivo local de ${year}.
@@ -306,6 +282,7 @@ function processProcedimentosData(data, year) {
   console.log('Dados recebidos:', data);
 
   procedimentosData = {};
+  totalGeralDados = 0; // Reset do total
 
   if (!Array.isArray(data) || data.length === 0) {
     updateMap();
@@ -313,13 +290,23 @@ function processProcedimentosData(data, year) {
     return;
   }
 
-  const sample = data[0] || {};
+  // Verificar se o primeiro elemento contém o total geral
+  if (data.length > 0 && data[0].hasOwnProperty('Total')) {
+    totalGeralDados = Number(data[0].Total) || 0;
+    console.log(`Total geral dos dados de ${year}: ${totalGeralDados}`);
+  }
+
+  const sample = data[1] || data[0] || {}; // Usar segundo elemento se primeiro for total, senão primeiro
   const keys = Object.keys(sample);
   const ibgeKey = keys.find(k => /ibge|cd[_ ]?mun|codigo[_ ]?ibge|cod[_ ]?ibge/i.test(k)) || 'IBGE';
   const totalKey = keys.find(k => /total|procedimento/i.test(k)) || 'Total';
 
   let mapped = 0;
-  data.forEach((row) => {
+  // Começar do índice 1 se o primeiro elemento for o total geral, senão começar do 0
+  const startIndex = (data.length > 0 && data[0].hasOwnProperty('Total') && !data[0].hasOwnProperty('Ibge') && !data[0].hasOwnProperty('IBGE')) ? 1 : 0;
+
+  for (let i = startIndex; i < data.length; i++) {
+    const row = data[i];
     const ibgeRaw = row[ibgeKey];
     const totalRaw = row[totalKey];
 
@@ -327,8 +314,7 @@ function processProcedimentosData(data, year) {
     let total = Number(String(totalRaw).replace(/\./g, '').replace(',', '.'));
     if (Number.isNaN(total)) total = parseInt(totalRaw) || 0;
 
-    if (!ibgeNorm) return;
-
+    if (!ibgeNorm) continue;
 
     if (ibgeNorm.length === 7) {
       procedimentosData[ibgeNorm] = total;
@@ -337,10 +323,9 @@ function processProcedimentosData(data, year) {
       procedimentosData[ibgeNorm] = total;
     }
     mapped++;
-  });
+  }
 
   console.log(`Linhas mapeadas: ${mapped}`);
-
 
   updateMap();
   updateStats();
@@ -351,7 +336,7 @@ function processProcedimentosData(data, year) {
 function updateMap() {
   if (!municipiosLayer) return;
   municipiosLayer.eachLayer((layer) => {
-    layer.setStyle({ fillColor: getColorCobertura(layer.feature) });
+    layer.setStyle({ fillColor: getCorPraticasIntegrativas(layer.feature) });
   });
 }
 
@@ -365,10 +350,12 @@ function updateStats() {
   ).size || Object.keys(procedimentosData).length;
   const mediaProcedimentos = municipiosComDados > 0 ? Math.round(totalProcedimentos / municipiosComDados) : 0;
 
+  const elTotalGeral = document.getElementById('totalGeralDados');
   const elTotMun = document.getElementById('totalMunicipios');
   const elTotProc = document.getElementById('totalProcedimentos');
   const elMed = document.getElementById('mediaProcedimentos');
 
+  if (elTotalGeral) elTotalGeral.textContent = formatNumber(totalGeralDados);
   if (elTotMun) elTotMun.textContent = totalMunicipios;
   if (elTotProc) elTotProc.textContent = formatNumber(totalProcedimentos);
   if (elMed) elMed.textContent = formatNumber(mediaProcedimentos);
