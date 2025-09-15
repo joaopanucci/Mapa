@@ -109,7 +109,9 @@ header h1 {
     gap: 1.5rem;
 }
 
-.info-panel, .legend, .stats-panel {
+.info-panel,
+.legend,
+.stats-panel {
     background: white;
     border-radius: 12px;
     padding: 1.5rem;
@@ -117,7 +119,9 @@ header h1 {
     border: 1px solid #e9ecef;
 }
 
-.info-panel h3, .legend h3, .stats-panel h3 {
+.info-panel h3,
+.legend h3,
+.stats-panel h3 {
     color: #495057;
     margin-bottom: 1rem;
     font-size: 1.1rem;
@@ -299,7 +303,9 @@ footer p {
         font-size: 1.2rem;
     }
 
-    .info-panel, .legend, .stats-panel {
+    .info-panel,
+    .legend,
+    .stats-panel {
         padding: 1rem;
     }
 
@@ -336,8 +342,13 @@ footer p {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .loading-indicator.show::before {
@@ -350,4 +361,224 @@ footer p {
     border-top: 2px solid white;
     border-radius: 50%;
     animation: spin 1s linear infinite;
+}
+
+/* Estilos para os nomes dos municípios no mapa */
+.municipio-label {
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.municipio-name {
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+    text-align: center;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease;
+}
+
+/* Ajustes responsivos para os nomes */
+@media (max-width: 768px) {
+    .municipio-name {
+        font-size: 9px;
+        padding: 1px 4px;
+    }
+}
+
+/* Ajustes para diferentes níveis de zoom */
+.leaflet-zoom-anim .municipio-name {
+    transition: all 0.25s ease;
+}
+
+/* Estilos para impressão/relatório */
+.print-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: white;
+    z-index: 9999;
+    overflow: auto;
+}
+
+.print-content {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.print-header {
+    text-align: center;
+    padding: 20px;
+    background-color: #667eea;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.print-header h1 {
+    font-size: 24px;
+    margin: 0 0 10px 0;
+}
+
+.print-header p {
+    font-size: 16px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.print-body {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+    padding: 0 20px 20px 20px;
+    height: calc(100vh - 140px);
+}
+
+.print-sidebar {
+    width: 25%;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    overflow-y: auto;
+}
+
+.print-sidebar h3 {
+    font-size: 16px;
+    color: #495057;
+    margin: 0 0 15px 0;
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #667eea;
+}
+
+.print-map-container {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.print-map {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    background: white;
+}
+
+.municipio-item {
+    padding: 8px 12px;
+    margin: 5px 0;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.municipio-item.com-praticas {
+    border-left: 4px solid #003d7a;
+}
+
+.municipio-item.sem-praticas {
+    border-left: 4px solid #cccccc;
+    color: #6c757d;
+}
+
+.municipio-nome {
+    font-weight: 600;
+    color: #495057;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.municipio-procedimentos {
+    font-size: 11px;
+    color: #6c757d;
+}
+
+.print-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    gap: 10px;
+}
+
+.print-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.print-btn:hover {
+    background: #5a67d8;
+}
+
+.print-btn.close {
+    background: #dc3545;
+}
+
+.print-btn.close:hover {
+    background: #c82333;
+}
+
+/* Media queries para impressão */
+@media print {
+    .print-controls {
+        display: none !important;
+    }
+
+    .print-content {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .print-body {
+        height: auto;
+        min-height: calc(100vh - 140px);
+    }
+
+    .print-sidebar {
+        break-inside: avoid;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    .print-container,
+    .print-container * {
+        visibility: visible;
+    }
+
+    .print-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+    }
 }

@@ -1,6 +1,7 @@
 
 let map;
 let municipiosLayer;
+let municipiosLabels = []; // Array para armazenar as labels dos nomes dos municípios
 let municipiosData = {};
 let procedimentosData = {};
 let populacaoData = {};
@@ -70,6 +71,9 @@ async function initMap() {
   });
 
   L.control.zoom({ position: 'topright' }).addTo(map);
+
+  // Adicionar listener para controlar visibilidade dos labels baseado no zoom
+  map.on('zoomend', updateLabelsVisibility);
 
   await loadPopulacaoData();
   loadSVGBackground();
@@ -160,6 +164,10 @@ async function loadMunicipiosData() {
 function createMunicipiosLayer() {
   if (municipiosLayer) map.removeLayer(municipiosLayer);
 
+  // Remove labels anteriores
+  municipiosLabels.forEach(label => map.removeLayer(label));
+  municipiosLabels = [];
+
   municipiosLayer = L.geoJSON(municipiosData, {
     style: (feature) => {
       return {
@@ -179,9 +187,55 @@ function createMunicipiosLayer() {
     }
   }).addTo(map);
 
+  // Adicionar labels com nomes dos municípios
+  addMunicipioLabels();
+
   try {
     map.fitBounds(municipiosLayer.getBounds(), { padding: [10, 10] });
   } catch { }
+}
+
+// Função para adicionar labels com os nomes dos municípios
+function addMunicipioLabels() {
+  if (!municipiosData.features) return;
+
+  municipiosData.features.forEach(feature => {
+    const props = feature.properties;
+    const nome = props.NM_MUN || props.nome || 'Sem nome';
+
+    // Calcular o centroide do polígono para posicionar o label
+    const bounds = L.geoJSON(feature).getBounds();
+    const center = bounds.getCenter();
+
+    // Criar o marker invisível com o nome
+    const label = L.divIcon({
+      className: 'municipio-label',
+      html: `<span class="municipio-name">${nome}</span>`,
+      iconSize: [100, 20],
+      iconAnchor: [50, 10]
+    });
+
+    const marker = L.marker(center, { icon: label, interactive: false });
+    marker.addTo(map);
+    municipiosLabels.push(marker);
+  });
+}
+
+// Função para controlar a visibilidade dos labels baseada no nível de zoom
+function updateLabelsVisibility() {
+  const zoom = map.getZoom();
+  const showLabels = zoom >= 8; // Mostrar labels apenas em zoom >= 8
+
+  municipiosLabels.forEach(label => {
+    const element = label.getElement();
+    if (element) {
+      const nameSpan = element.querySelector('.municipio-name');
+      if (nameSpan) {
+        nameSpan.style.opacity = showLabels ? '1' : '0';
+        nameSpan.style.pointerEvents = showLabels ? 'none' : 'none';
+      }
+    }
+  });
 }
 
 
@@ -382,6 +436,220 @@ function toggleFullscreen() {
   }
 }
 
+// Funções para impressão/relatório
+let printMap = null;
+
+function generatePrintReport() {
+  const printContainer = document.getElementById('printContainer');
+  const printYearInfo = document.getElementById('printYearInfo');
+  const municipiosComPraticas = document.getElementById('municipiosComPraticas');
+  const estatisticasGerais = document.getElementById('estatisticasGerais');
+
+  // Atualizar informações do cabeçalho
+  printYearInfo.textContent = `Ano: ${currentYear} | Total Geral: ${formatNumber(totalGeralDados)}`;
+
+  // Gerar listas de municípios
+  generateMunicipiosList(municipiosComPraticas);
+  generateEstatisticas(estatisticasGerais);
+
+  // Mostrar container de impressão
+  printContainer.style.display = 'block';
+
+  // Criar mapa para impressão
+  setTimeout(() => {
+    createPrintMap();
+  }, 100);
+}
+
+function generateMunicipiosList(container) {
+  container.innerHTML = '';
+
+  if (!municipiosData.features) return;
+
+  const municipiosComDados = [];
+  const municipiosSemDados = [];
+
+  municipiosData.features.forEach(feature => {
+    const props = feature.properties;
+    const nome = props.NM_MUN || 'Sem nome';
+    const procedimentos = lookupProcedimentosByFeature(feature);
+    const populacao = getPopulacaoByFeature(feature);
+
+    const municipioInfo = {
+      nome: nome,
+      procedimentos: procedimentos,
+      populacao: populacao,
+      ibge: props.CD_MUN
+    };
+
+    if (procedimentos > 0) {
+      municipiosComDados.push(municipioInfo);
+    } else {
+      municipiosSemDados.push(municipioInfo);
+    }
+  });
+
+  // Ordenar por número de procedimentos (decrescente)
+  municipiosComDados.sort((a, b) => b.procedimentos - a.procedimentos);
+  municipiosSemDados.sort((a, b) => a.nome.localeCompare(b.nome));
+
+  // Adicionar municípios com práticas
+  municipiosComDados.forEach(municipio => {
+    const item = document.createElement('div');
+    item.className = 'municipio-item com-praticas';
+    item.innerHTML = `
+      <span class="municipio-nome">${municipio.nome}</span>
+      <span class="municipio-procedimentos">${formatNumber(municipio.procedimentos)} procedimentos</span>
+    `;
+    container.appendChild(item);
+  });
+
+  // Adicionar separador se houver municípios sem dados
+  if (municipiosSemDados.length > 0) {
+    const separador = document.createElement('div');
+    separador.innerHTML = '<h4 style="margin: 15px 0 10px 0; color: #6c757d; font-size: 14px;">Sem Práticas Integrativas:</h4>';
+    container.appendChild(separador);
+
+    municipiosSemDados.forEach(municipio => {
+      const item = document.createElement('div');
+      item.className = 'municipio-item sem-praticas';
+      item.innerHTML = `
+        <span class="municipio-nome">${municipio.nome}</span>
+        <span class="municipio-procedimentos">0 procedimentos</span>
+      `;
+      container.appendChild(item);
+    });
+  }
+}
+
+function generateEstatisticas(container) {
+  const totalMunicipios = Array.isArray(municipiosData.features) ? municipiosData.features.length : 0;
+  const totais = Object.values(procedimentosData).filter(v => typeof v === 'number' && !Number.isNaN(v));
+  const totalProcedimentos = totais.reduce((sum, v) => sum + v, 0);
+
+  let municipiosComPraticas = 0;
+  let municipiosSemPraticas = 0;
+
+  if (municipiosData.features) {
+    municipiosData.features.forEach(feature => {
+      const procedimentos = lookupProcedimentosByFeature(feature);
+      if (procedimentos > 0) {
+        municipiosComPraticas++;
+      } else {
+        municipiosSemPraticas++;
+      }
+    });
+  }
+
+  const mediaProcedimentos = municipiosComPraticas > 0 ? Math.round(totalProcedimentos / municipiosComPraticas) : 0;
+  const percentualCobertura = totalMunicipios > 0 ? ((municipiosComPraticas / totalMunicipios) * 100).toFixed(1) : 0;
+
+  container.innerHTML = `
+    <div class="municipio-item">
+      <span class="municipio-nome">Total de Municípios</span>
+      <span class="municipio-procedimentos">${totalMunicipios}</span>
+    </div>
+    <div class="municipio-item">
+      <span class="municipio-nome">Com Práticas Integrativas</span>
+      <span class="municipio-procedimentos">${municipiosComPraticas} (${percentualCobertura}%)</span>
+    </div>
+    <div class="municipio-item">
+      <span class="municipio-nome">Sem Práticas Integrativas</span>
+      <span class="municipio-procedimentos">${municipiosSemPraticas}</span>
+    </div>
+    <div class="municipio-item">
+      <span class="municipio-nome">Total de Procedimentos</span>
+      <span class="municipio-procedimentos">${formatNumber(totalProcedimentos)}</span>
+    </div>
+    <div class="municipio-item">
+      <span class="municipio-nome">Total Geral dos Dados</span>
+      <span class="municipio-procedimentos">${formatNumber(totalGeralDados)}</span>
+    </div>
+    <div class="municipio-item">
+      <span class="municipio-nome">Média por Município (c/ práticas)</span>
+      <span class="municipio-procedimentos">${formatNumber(mediaProcedimentos)}</span>
+    </div>
+  `;
+}
+
+function createPrintMap() {
+  const printMapElement = document.getElementById('printMap');
+
+  if (printMap) {
+    printMap.remove();
+  }
+
+  printMap = L.map(printMapElement, {
+    center: [-20.4486, -54.6295],
+    zoom: 7,
+    zoomControl: false,
+    dragging: false,
+    touchZoom: false,
+    scrollWheelZoom: false,
+    doubleClickZoom: false,
+    boxZoom: false,
+    keyboard: false,
+    crs: L.CRS.Simple
+  });
+
+  // Adicionar SVG de fundo
+  if (municipiosData) {
+    const printMunicipiosLayer = L.geoJSON(municipiosData, {
+      style: (feature) => {
+        return {
+          fillColor: getCorPraticasIntegrativas(feature),
+          weight: 1,
+          opacity: 1,
+          color: '#ffffff',
+          fillOpacity: 1
+        };
+      }
+    }).addTo(printMap);
+
+    try {
+      printMap.fitBounds(printMunicipiosLayer.getBounds(), { padding: [10, 10] });
+    } catch { }
+
+    // Adicionar labels dos municípios para impressão
+    if (municipiosData.features) {
+      municipiosData.features.forEach(feature => {
+        const props = feature.properties;
+        const nome = props.NM_MUN || props.nome || 'Sem nome';
+        const procedimentos = lookupProcedimentosByFeature(feature);
+
+        // Só mostrar labels para municípios com práticas integrativas
+        if (procedimentos > 0) {
+          const bounds = L.geoJSON(feature).getBounds();
+          const center = bounds.getCenter();
+
+          const label = L.divIcon({
+            className: 'municipio-label',
+            html: `<span class="municipio-name">${nome}</span>`,
+            iconSize: [100, 20],
+            iconAnchor: [50, 10]
+          });
+
+          L.marker(center, { icon: label, interactive: false }).addTo(printMap);
+        }
+      });
+    }
+  }
+}
+
+function closePrintReport() {
+  const printContainer = document.getElementById('printContainer');
+  printContainer.style.display = 'none';
+
+  if (printMap) {
+    printMap.remove();
+    printMap = null;
+  }
+}
+
+function doPrint() {
+  window.print();
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   initMap();
@@ -403,6 +671,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const fullscreenBtn = document.getElementById('fullscreen');
   if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+  const printReportBtn = document.getElementById('printReport');
+  if (printReportBtn) printReportBtn.addEventListener('click', generatePrintReport);
+
+  const doPrintBtn = document.getElementById('doPrint');
+  if (doPrintBtn) doPrintBtn.addEventListener('click', doPrint);
+
+  const closePrintBtn = document.getElementById('closePrint');
+  if (closePrintBtn) closePrintBtn.addEventListener('click', closePrintReport);
 
   document.addEventListener('fullscreenchange', () => {
     const b = document.getElementById('fullscreen');

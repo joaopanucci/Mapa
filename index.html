@@ -93,6 +93,7 @@
                 <div class="map-controls">
                     <button id="resetView" class="control-btn">Resetar</button>
                     <button id="fullscreen" class="control-btn">Tela Cheia</button>
+                    <button id="printReport" class="control-btn">Imprimir Relatório</button>
                 </div>
             </div>
         </div>
@@ -101,6 +102,38 @@
     <footer>
         <p>&copy; 2024 - Mapa Interativo PICS - MS | Usando mapa SVG dos municípios</p>
     </footer>
+
+    <!-- Container para impressão/relatório -->
+    <div id="printContainer" class="print-container">
+        <div class="print-content">
+            <div class="print-header">
+                <h1>Relatório - Práticas Integrativas em Mato Grosso do Sul</h1>
+                <p id="printYearInfo">Ano: 2024</p>
+            </div>
+
+            <div class="print-controls">
+                <button id="doPrint" class="print-btn">Imprimir</button>
+                <button id="closePrint" class="print-btn close">Fechar</button>
+            </div>
+
+            <div class="print-body">
+                <div class="print-sidebar" id="leftSidebar">
+                    <h3>Municípios com Práticas Integrativas</h3>
+                    <div id="municipiosComPraticas"></div>
+                </div>
+
+                <div class="print-map-container">
+                    <div id="printMap" class="print-map"></div>
+                </div>
+
+                <div class="print-sidebar" id="rightSidebar">
+                    <h3>Estatísticas Gerais</h3>
+                    <div id="estatisticasGerais"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
