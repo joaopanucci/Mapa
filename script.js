@@ -1,11 +1,11 @@
 
 let map;
 let municipiosLayer;
-let municipiosLabels = []; // Array para armazenar as labels dos nomes dos municípios
+let municipiosLabels = [];
 let municipiosData = {};
 let procedimentosData = {};
 let populacaoData = {};
-let totalGeralDados = 0; // Armazena o total geral dos dados carregados
+let totalGeralDados = 0;
 let currentYear = '2024';
 
 
@@ -19,8 +19,6 @@ const sheetsUrls = {
   '2025': './csv/pics 2025 - Dados.json'
 };
 
-// Função para obter a população do município a partir do feature
-// Busca a população pelo nome do município normalizado
 function getPopulacaoByFeature(feature) {
   const props = feature?.properties || {};
   const nome = (props.NM_MUN || props.nome || '').toLocaleLowerCase().normalize('NFD').replace(/[^\w\s]/g, '').trim();
@@ -30,14 +28,13 @@ function getPopulacaoByFeature(feature) {
   return 0;
 }
 
-// Função para calcular a cor baseada na presença de práticas integrativas
+
 function getCorPraticasIntegrativas(feature) {
   const procedimentos = lookupProcedimentosByFeature(feature);
-  // Se tem procedimentos/práticas integrativas: azul escuro, senão: cinza
   if (procedimentos && procedimentos > 0) {
-    return '#003d7a'; // Azul escuro
+    return '#003d7a';
   }
-  return '#cccccc'; // Cinza
+  return '#cccccc';
 }
 
 function normalizeIBGE(v) {
@@ -50,7 +47,6 @@ function normalizeIBGE(v) {
 }
 
 
-// Função antiga mantida para compatibilidade, mas não será mais usada
 function getColor(procedimentos) {
   return '#cccccc';
 }
@@ -66,21 +62,23 @@ async function initMap() {
   map = L.map('map', {
     center: [-20.4486, -54.6295],
     zoom: 7,
+    minZoom: 6,
+    maxZoom: 10,
     zoomControl: false,
     crs: L.CRS.Simple
   });
 
   L.control.zoom({ position: 'topright' }).addTo(map);
 
-  // Adicionar listener para controlar visibilidade dos labels baseado no zoom
   map.on('zoomend', updateLabelsVisibility);
+
+  map.on('moveend', updateLabelsVisibility);
 
   await loadPopulacaoData();
   loadSVGBackground();
   loadMunicipiosData();
 }
 
-// Carrega populacao.json e monta dicionário populacaoData
 async function loadPopulacaoData() {
   try {
     const response = await fetch('populacao.json', { cache: 'no-store' });
@@ -164,7 +162,6 @@ async function loadMunicipiosData() {
 function createMunicipiosLayer() {
   if (municipiosLayer) map.removeLayer(municipiosLayer);
 
-  // Remove labels anteriores
   municipiosLabels.forEach(label => map.removeLayer(label));
   municipiosLabels = [];
 
@@ -187,7 +184,6 @@ function createMunicipiosLayer() {
     }
   }).addTo(map);
 
-  // Adicionar labels com nomes dos municípios
   addMunicipioLabels();
 
   try {
@@ -195,7 +191,6 @@ function createMunicipiosLayer() {
   } catch { }
 }
 
-// Função para adicionar labels com os nomes dos municípios
 function addMunicipioLabels() {
   if (!municipiosData.features) return;
 
@@ -203,36 +198,42 @@ function addMunicipioLabels() {
     const props = feature.properties;
     const nome = props.NM_MUN || props.nome || 'Sem nome';
 
-    // Calcular o centroide do polígono para posicionar o label
     const bounds = L.geoJSON(feature).getBounds();
     const center = bounds.getCenter();
 
-    // Criar o marker invisível com o nome
     const label = L.divIcon({
       className: 'municipio-label',
       html: `<span class="municipio-name">${nome}</span>`,
-      iconSize: [100, 20],
-      iconAnchor: [50, 10]
+      iconSize: [80, 16],
+      iconAnchor: [40, 8]
     });
 
-    const marker = L.marker(center, { icon: label, interactive: false });
+    const marker = L.marker(center, {
+      icon: label,
+      interactive: false,
+      opacity: 0
+    });
     marker.addTo(map);
     municipiosLabels.push(marker);
   });
 }
 
-// Função para controlar a visibilidade dos labels baseada no nível de zoom
+
 function updateLabelsVisibility() {
   const zoom = map.getZoom();
-  const showLabels = zoom >= 8; // Mostrar labels apenas em zoom >= 8
+
+  let opacity = 0;
+  if (zoom >= 9) opacity = 1;
+  else if (zoom === 8) opacity = 0.7;
+
 
   municipiosLabels.forEach(label => {
     const element = label.getElement();
     if (element) {
       const nameSpan = element.querySelector('.municipio-name');
       if (nameSpan) {
-        nameSpan.style.opacity = showLabels ? '1' : '0';
-        nameSpan.style.pointerEvents = showLabels ? 'none' : 'none';
+        nameSpan.style.opacity = opacity.toString();
+        nameSpan.style.pointerEvents = 'none';
       }
     }
   });
@@ -336,27 +337,24 @@ function processProcedimentosData(data, year) {
   console.log('Dados recebidos:', data);
 
   procedimentosData = {};
-  totalGeralDados = 0; // Reset do total
-
+  totalGeralDados = 0;
   if (!Array.isArray(data) || data.length === 0) {
     updateMap();
     updateStats();
     return;
   }
 
-  // Verificar se o primeiro elemento contém o total geral
   if (data.length > 0 && data[0].hasOwnProperty('Total')) {
     totalGeralDados = Number(data[0].Total) || 0;
     console.log(`Total geral dos dados de ${year}: ${totalGeralDados}`);
   }
 
-  const sample = data[1] || data[0] || {}; // Usar segundo elemento se primeiro for total, senão primeiro
+  const sample = data[1] || data[0] || {};
   const keys = Object.keys(sample);
   const ibgeKey = keys.find(k => /ibge|cd[_ ]?mun|codigo[_ ]?ibge|cod[_ ]?ibge/i.test(k)) || 'IBGE';
   const totalKey = keys.find(k => /total|procedimento/i.test(k)) || 'Total';
 
   let mapped = 0;
-  // Começar do índice 1 se o primeiro elemento for o total geral, senão começar do 0
   const startIndex = (data.length > 0 && data[0].hasOwnProperty('Total') && !data[0].hasOwnProperty('Ibge') && !data[0].hasOwnProperty('IBGE')) ? 1 : 0;
 
   for (let i = startIndex; i < data.length; i++) {
@@ -417,13 +415,22 @@ function updateStats() {
 
 
 function resetMapView() {
-  // Se há dados dos municípios, ajustar para os limites dos municípios
+
   if (municipiosLayer && municipiosData.features) {
-    map.fitBounds(municipiosLayer.getBounds());
+    map.fitBounds(municipiosLayer.getBounds(), {
+      maxZoom: 7,
+      padding: [20, 20],
+      animate: true,
+      duration: 0.5
+    });
   } else {
-    // Fallback para coordenadas padrão de MS
-    map.setView([-20.4486, -54.6295], 7);
+    map.setView([-20.4486, -54.6295], 7, {
+      animate: true,
+      duration: 0.5
+    });
   }
+
+  setTimeout(updateLabelsVisibility, 100);
 }
 
 function toggleFullscreen() {
@@ -436,29 +443,109 @@ function toggleFullscreen() {
   }
 }
 
-// Funções para impressão/relatório
 let printMap = null;
 
 function generatePrintReport() {
   const printContainer = document.getElementById('printContainer');
   const printYearInfo = document.getElementById('printYearInfo');
-  const municipiosComPraticas = document.getElementById('municipiosComPraticas');
+  const municipiosComPraticasLeft = document.getElementById('municipiosComPraticasLeft');
+  const municipiosComPraticasRight = document.getElementById('municipiosComPraticasRight');
   const estatisticasGerais = document.getElementById('estatisticasGerais');
+  const municipiosSemPraticas = document.getElementById('municipiosSemPraticas');
 
-  // Atualizar informações do cabeçalho
-  printYearInfo.textContent = `Ano: ${currentYear} | Total Geral: ${formatNumber(totalGeralDados)}`;
 
-  // Gerar listas de municípios
-  generateMunicipiosList(municipiosComPraticas);
+  if (municipiosComPraticasLeft) municipiosComPraticasLeft.innerHTML = '';
+  if (municipiosComPraticasRight) municipiosComPraticasRight.innerHTML = '';
+  if (estatisticasGerais) estatisticasGerais.innerHTML = '';
+  if (municipiosSemPraticas) municipiosSemPraticas.innerHTML = '';
+  if (printYearInfo) printYearInfo.textContent = `Ano: ${currentYear}`;
+
+  generateMunicipiosListaDividida(municipiosComPraticasLeft, municipiosComPraticasRight);
   generateEstatisticas(estatisticasGerais);
 
-  // Mostrar container de impressão
   printContainer.style.display = 'block';
 
-  // Criar mapa para impressão
   setTimeout(() => {
     createPrintMap();
   }, 100);
+}
+
+function generateMunicipiosListaDividida(containerLeft, containerRight) {
+  containerLeft.innerHTML = '';
+  containerRight.innerHTML = '';
+
+  if (!municipiosData.features) return;
+
+  const municipiosComDados = [];
+  const municipiosSemDados = [];
+
+  municipiosData.features.forEach(feature => {
+    const props = feature.properties;
+    const nome = props.NM_MUN || 'Sem nome';
+    const procedimentos = lookupProcedimentosByFeature(feature);
+    const populacao = getPopulacaoByFeature(feature);
+
+    const municipioInfo = {
+      nome: nome,
+      procedimentos: procedimentos,
+      populacao: populacao,
+      ibge: props.CD_MUN
+    };
+
+    if (procedimentos > 0) {
+      municipiosComDados.push(municipioInfo);
+    } else {
+      municipiosSemDados.push(municipioInfo);
+    }
+  });
+
+  municipiosComDados.sort((a, b) => {
+    if (b.procedimentos !== a.procedimentos) {
+      return b.procedimentos - a.procedimentos;
+    }
+    return a.nome.localeCompare(b.nome);
+  });
+
+  const municipiosA_M = municipiosComDados.filter(m => m.nome[0] >= 'A' && m.nome[0] <= 'M');
+  const municipiosN_Z = municipiosComDados.filter(m => m.nome[0] >= 'N' && m.nome[0] <= 'Z');
+
+  municipiosA_M.forEach(municipio => {
+    const item = document.createElement('div');
+    item.className = 'municipio-item com-praticas';
+    item.innerHTML = `
+      <span class="municipio-nome">${municipio.nome}</span>
+      <span class="municipio-procedimentos">${formatNumber(municipio.procedimentos)} procedimentos</span>
+    `;
+    containerLeft.appendChild(item);
+  });
+
+  municipiosN_Z.forEach(municipio => {
+    const item = document.createElement('div');
+    item.className = 'municipio-item com-praticas';
+    item.innerHTML = `
+      <span class="municipio-nome">${municipio.nome}</span>
+      <span class="municipio-procedimentos">${formatNumber(municipio.procedimentos)} procedimentos</span>
+    `;
+    containerRight.appendChild(item);
+  });
+
+  const containerSemPraticas = document.getElementById('municipiosSemPraticas');
+  if (containerSemPraticas && municipiosSemDados.length > 0) {
+    containerSemPraticas.innerHTML = '';
+    municipiosSemDados.sort((a, b) => a.nome.localeCompare(b.nome));
+
+    const grid = document.createElement('div');
+    grid.className = 'municipios-sem-praticas-grid';
+
+    municipiosSemDados.forEach(municipio => {
+      const item = document.createElement('span');
+      item.className = 'municipio-sem-praticas';
+      item.textContent = municipio.nome;
+      grid.appendChild(item);
+    });
+
+    containerSemPraticas.appendChild(grid);
+  }
 }
 
 function generateMunicipiosList(container) {
@@ -489,11 +576,9 @@ function generateMunicipiosList(container) {
     }
   });
 
-  // Ordenar por número de procedimentos (decrescente)
   municipiosComDados.sort((a, b) => b.procedimentos - a.procedimentos);
   municipiosSemDados.sort((a, b) => a.nome.localeCompare(b.nome));
 
-  // Adicionar municípios com práticas
   municipiosComDados.forEach(municipio => {
     const item = document.createElement('div');
     item.className = 'municipio-item com-praticas';
@@ -504,7 +589,6 @@ function generateMunicipiosList(container) {
     container.appendChild(item);
   });
 
-  // Adicionar separador se houver municípios sem dados
   if (municipiosSemDados.length > 0) {
     const separador = document.createElement('div');
     separador.innerHTML = '<h4 style="margin: 15px 0 10px 0; color: #6c757d; font-size: 14px;">Sem Práticas Integrativas:</h4>';
@@ -573,66 +657,62 @@ function generateEstatisticas(container) {
 }
 
 function createPrintMap() {
-  const printMapElement = document.getElementById('printMap');
+  try {
+    const printMapElement = document.getElementById('printMap');
 
-  if (printMap) {
-    printMap.remove();
-  }
-
-  printMap = L.map(printMapElement, {
-    center: [-20.4486, -54.6295],
-    zoom: 7,
-    zoomControl: false,
-    dragging: false,
-    touchZoom: false,
-    scrollWheelZoom: false,
-    doubleClickZoom: false,
-    boxZoom: false,
-    keyboard: false,
-    crs: L.CRS.Simple
-  });
-
-  // Adicionar SVG de fundo
-  if (municipiosData) {
-    const printMunicipiosLayer = L.geoJSON(municipiosData, {
-      style: (feature) => {
-        return {
-          fillColor: getCorPraticasIntegrativas(feature),
-          weight: 1,
-          opacity: 1,
-          color: '#ffffff',
-          fillOpacity: 1
-        };
-      }
-    }).addTo(printMap);
-
-    try {
-      printMap.fitBounds(printMunicipiosLayer.getBounds(), { padding: [10, 10] });
-    } catch { }
-
-    // Adicionar labels dos municípios para impressão
-    if (municipiosData.features) {
-      municipiosData.features.forEach(feature => {
-        const props = feature.properties;
-        const nome = props.NM_MUN || props.nome || 'Sem nome';
-        const procedimentos = lookupProcedimentosByFeature(feature);
-
-        // Só mostrar labels para municípios com práticas integrativas
-        if (procedimentos > 0) {
-          const bounds = L.geoJSON(feature).getBounds();
-          const center = bounds.getCenter();
-
-          const label = L.divIcon({
-            className: 'municipio-label',
-            html: `<span class="municipio-name">${nome}</span>`,
-            iconSize: [100, 20],
-            iconAnchor: [50, 10]
-          });
-
-          L.marker(center, { icon: label, interactive: false }).addTo(printMap);
-        }
-      });
+    if (!printMapElement) {
+      console.error('Elemento printMap não encontrado');
+      return;
     }
+
+    if (printMap) {
+      printMap.remove();
+      printMap = null;
+    }
+
+    printMap = L.map(printMapElement, {
+      center: [-20.4486, -54.6295],
+      zoom: 6,
+      minZoom: 6,
+      zoomControl: false,
+      dragging: false,
+      touchZoom: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      attributionControl: false
+    });
+
+    if (municipiosData && municipiosData.features) {
+      const geoJsonLayer = L.geoJSON(municipiosData, {
+        style: function (feature) {
+          const procedimentos = lookupProcedimentosByFeature(feature);
+          return {
+            fillColor: procedimentos > 0 ? '#0066cc' : '#cccccc',
+            weight: 1,
+            opacity: 1,
+            color: 'white',
+            fillOpacity: 0.8
+          };
+        }
+      }).addTo(printMap);
+
+      setTimeout(() => {
+        try {
+          if (geoJsonLayer.getBounds().isValid()) {
+            printMap.fitBounds(geoJsonLayer.getBounds(), {
+              maxZoom: 6,
+              padding: [10, 10]
+            });
+          }
+        } catch (e) {
+          console.error('Erro ao ajustar limites do mapa:', e);
+        }
+      }, 200);
+    }
+  } catch (err) {
+    console.error('Erro ao criar mapa para impressão:', err);
   }
 }
 
@@ -691,3 +771,4 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('resize', () => {
   if (map) setTimeout(() => map.invalidateSize(), 100);
 });
+

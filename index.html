@@ -103,7 +103,6 @@
         <p>&copy; 2024 - Mapa Interativo PICS - MS | Usando mapa SVG dos municípios</p>
     </footer>
 
-    <!-- Container para impressão/relatório -->
     <div id="printContainer" class="print-container">
         <div class="print-content">
             <div class="print-header">
@@ -117,16 +116,23 @@
             </div>
 
             <div class="print-body">
-                <div class="print-sidebar" id="leftSidebar">
-                    <h3>Municípios com Práticas Integrativas</h3>
-                    <div id="municipiosComPraticas"></div>
+                <div class="print-top-section">
+                    <div class="print-sidebar" id="leftSidebar">
+                        <h3>Municípios com Práticas Integrativas (Lado A)</h3>
+                        <div id="municipiosComPraticasLeft"></div>
+                    </div>
+
+                    <div class="print-map-container">
+                        <div id="printMap"></div>
+                    </div>
+
+                    <div class="print-sidebar" id="rightSidebar">
+                        <h3>Municípios com Práticas Integrativas (Lado B)</h3>
+                        <div id="municipiosComPraticasRight"></div>
+                    </div>
                 </div>
 
-                <div class="print-map-container">
-                    <div id="printMap" class="print-map"></div>
-                </div>
-
-                <div class="print-sidebar" id="rightSidebar">
+                <div class="print-bottom-section">
                     <h3>Estatísticas Gerais</h3>
                     <div id="estatisticasGerais"></div>
                 </div>
