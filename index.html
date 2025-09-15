@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Interativo - Municípios de MS</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Mapa Interativo - Pics Mato Grosso do Sul</h1>
+            <div class="controls">
+                <div class="year-selector">
+                    <label for="yearSelect">Ano:</label>
+                    <select id="yearSelect">
+                        <option value="2019" selected>2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+                <button id="loadDataBtn" class="load-btn">Carregar Dados</button>
+                <div class="loading-indicator" id="loadingIndicator">
+                    <span>Carregando...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <aside class="sidebar">
+                <div class="info-panel">
+                    <h3>Informações do Município</h3>
+                    <div id="municipioInfo">
+                        <p>Clique em um município para ver informações detalhadas.</p>
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <h3>Legenda</h3>
+                    <div class="legend-description" style="font-size: 1em; margin-bottom: 10px;">
+                        <br><b>Verde:</b> Cidade atende bem a população<br>
+                        <b>Amarelo:</b> Atenção média<br>
+                        <b>Vermelho:</b> Cidade atende pouco da população<br>
+                        <b>Cinza:</b> Sem dados disponíveis<br>
+                        </span>
+                    </div>
+                    <div class="legend-content">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #48ff00;"></div>
+                            <span>Verde: cidade atende bem</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ffe600;"></div>
+                            <span>Amarelo: atenção média</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #ff0000;"></div>
+                            <span>Vermelho: atende pouco</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #cccccc;"></div>
+                            <span>Cinza: sem dados</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-panel">
+                    <h3>Estatísticas</h3>
+                    <div id="statsContent">
+                        <div class="stat-item">
+                            <span class="stat-label">Total de Municípios:</span>
+                            <span class="stat-value" id="totalMunicipios">79</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Total de Procedimentos:</span>
+                            <span class="stat-value" id="totalProcedimentos">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Média por Município:</span>
+                            <span class="stat-value" id="mediaProcedimentos">-</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-controls">
+                    <button id="resetView" class="control-btn">Resetar</button>
+                    <button id="fullscreen" class="control-btn">Tela Cheia</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 - Mapa Interativo PICS - MS | Usando mapa SVG dos municípios</p>
+    </footer>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

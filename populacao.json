@@ -1,0 +1,322 @@
+{
+    "estado": "Mato Grosso do Sul",
+    "população_total": 2756700,
+    "municípios": [
+        {
+            "nome": "Água Clara",
+            "população": 17072
+        },
+        {
+            "nome": "Alcinópolis",
+            "população": 4670
+        },
+        {
+            "nome": "Amambai",
+            "população": 38251
+        },
+        {
+            "nome": "Anastácio",
+            "população": 23338
+        },
+        {
+            "nome": "Anaurilândia",
+            "população": 7805
+        },
+        {
+            "nome": "Angélica",
+            "população": 10663
+        },
+        {
+            "nome": "Antônio João",
+            "população": 8796
+        },
+        {
+            "nome": "Aparecida do Taboado",
+            "população": 27862
+        },
+        {
+            "nome": "Aquidauana",
+            "população": 44437
+        },
+        {
+            "nome": "Aral Moreira",
+            "população": 10670
+        },
+        {
+            "nome": "Bandeirantes",
+            "população": 7925
+        },
+        {
+            "nome": "Bataguassu",
+            "população": 23837
+        },
+        {
+            "nome": "Batayporã",
+            "população": 11231
+        },
+        {
+            "nome": "Bela Vista",
+            "população": 23594
+        },
+        {
+            "nome": "Bodoquena",
+            "população": 8944
+        },
+        {
+            "nome": "Bonito",
+            "população": 25185
+        },
+        {
+            "nome": "Brasilândia",
+            "população": 11634
+        },
+        {
+            "nome": "Caarapó",
+            "população": 33471
+        },
+        {
+            "nome": "Camapuã",
+            "população": 12428
+        },
+        {
+            "nome": "Campo Grande",
+            "população": 942140
+        },
+        {
+            "nome": "Caracol",
+            "população": 5281
+        },
+        {
+            "nome": "Cassilândia",
+            "população": 20951
+        },
+        {
+            "nome": "Chapadão do Sul",
+            "população": 30497
+        },
+        {
+            "nome": "Corguinho",
+            "população": 6025
+        },
+        {
+            "nome": "Coronel Sapucaia",
+            "população": 13228
+        },
+        {
+            "nome": "Corumbá",
+            "população": 94874
+        },
+        {
+            "nome": "Costa Rica",
+            "população": 26187
+        },
+        {
+            "nome": "Coxim",
+            "população": 32302
+        },
+        {
+            "nome": "Deodápolis",
+            "população": 13454
+        },
+        {
+            "nome": "Dois Irmãos do Buriti",
+            "população": 11134
+        },
+        {
+            "nome": "Douradina",
+            "população": 5800
+        },
+        {
+            "nome": "Dourados",
+            "população": 261019
+        },
+        {
+            "nome": "Eldorado",
+            "população": 12107
+        },
+        {
+            "nome": "Fátima do Sul",
+            "população": 20381
+        },
+        {
+            "nome": "Figueirão",
+            "população": 3520
+        },
+        {
+            "nome": "Glória de Dourados",
+            "população": 9998
+        },
+        {
+            "nome": "Guia Lopes da Laguna",
+            "população": 9912
+        },
+        {
+            "nome": "Iguatemi",
+            "população": 13808
+        },
+        {
+            "nome": "Inocência",
+            "população": 8424
+        },
+        {
+            "nome": "Itaporã",
+            "população": 23818
+        },
+        {
+            "nome": "Itaquiraí",
+            "população": 19453
+        },
+        {
+            "nome": "Ivinhema",
+            "população": 29890
+        },
+        {
+            "nome": "Japorã",
+            "população": 7966
+        },
+        {
+            "nome": "Jaraguari",
+            "popuação": 8819
+        },
+        {
+            "nome": "Jardim",
+            "população": 26214
+        },
+        {
+            "nome": "Jateí",
+            "população": 3315
+        },
+        {
+            "nome": "Juti",
+            "população": 6988
+        },
+        {
+            "nome": "Ladário",
+            "população": 20995
+        },
+        {
+            "nome": "Laguna Carapã",
+            "população": 7090
+        },
+        {
+            "nome": "Maracaju",
+            "população": 43247
+        },
+        {
+            "nome": "Miranda",
+            "população": 24553
+        },
+        {
+            "nome": "Mundo Novo",
+            "população": 18738
+        },
+        {
+            "nome": "Naviraí",
+            "população": 50868
+        },
+        {
+            "nome": "Nioaque",
+            "população": 15255
+        },
+        {
+            "nome": "Nova Alvorada do Sul",
+            "população": 21476
+        },
+        {
+            "nome": "Nova Andradina",
+            "população": 52221
+        },
+        {
+            "nome": "Novo Horizonte do Sul",
+            "população": 5278
+        },
+        {
+            "nome": "Paraíso das Águas",
+            "população": 5360
+        },
+        {
+            "nome": "Paranaíba",
+            "população": 40713
+        },
+        {
+            "nome": "Paranhos",
+            "população": 12926
+        },
+        {
+            "nome": "Pedro Gomes",
+            "população": 6842
+        },
+        {
+            "nome": "Ponta Porã",
+            "população": 90756
+        },
+        {
+            "nome": "Porto Murtinho",
+            "população": 12625
+        },
+        {
+            "nome": "Ribas do Rio Pardo",
+            "população": 23085
+        },
+        {
+            "nome": "Rio Brilhante",
+            "população": 38362
+        },
+        {
+            "nome": "Rio Negro",
+            "população": 4691
+        },
+        {
+            "nome": "Rio Verde de Mato Grosso",
+            "população": 19810
+        },
+        {
+            "nome": "Rochedo",
+            "população": 5340
+        },
+        {
+            "nome": "Santa Rita do Pardo",
+            "população": 7293
+        },
+        {
+            "nome": "São Gabriel do Oeste",
+            "população": 31846
+        },
+        {
+            "nome": "Sete Quedas",
+            "população": 10994
+        },
+        {
+            "nome": "Selvíria",
+            "população": 8000
+        },
+        {
+            "nome": "Sidrolândia",
+            "população": 51075
+        },
+        {
+            "nome": "Sonora",
+            "população": 14345
+        },
+        {
+            "nome": "Tacuru",
+            "população": 10749
+        },
+        {
+            "nome": "Taquarussu",
+            "população": 3634
+        },
+        {
+            "nome": "Terenos",
+            "população": 17342
+        },
+        {
+            "nome": "Três Lagoas",
+            "população": 132651
+        },
+        {
+            "nome": "Vicentina",
+            "população": 6264
+        }
+    ]
+}
